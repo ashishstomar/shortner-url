@@ -12,6 +12,16 @@ async function allowLoggedInUserOnly(req, res, next) {
   next();
 }
 
+async function checkAuth(req, res, next) {
+  const userUid = req.cookies?.uid;
+
+  const user = getUser(userUid);
+
+  req.user = user;
+  next();
+}
+
 module.exports = {
   allowLoggedInUserOnly,
+  checkAuth,
 };
