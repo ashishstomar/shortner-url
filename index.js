@@ -5,6 +5,8 @@ const URL = require("./models/url");
 const path = require("path");
 const staticRoute = require("./routes/staticRouter");
 const userRoute = require("./routes/userRoute");
+const cookieParser = require("cookie-parser");
+const { allowLoggedInUserOnly } = require("./middlewares/auth");
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +20,7 @@ app.set("views", path.resolve("./views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.get("/test", async (req, res) => {
   const allUrls = await URL.find({});
@@ -27,7 +30,7 @@ app.get("/test", async (req, res) => {
 });
 
 app.use("/user", userRoute);
-app.use("/url", urlRoute);
+app.use("/url", allowLoggedInUserOnly, urlRoute);
 app.use("/", staticRoute);
 
 app.get("/:shortId", async (req, res) => {
