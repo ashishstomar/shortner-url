@@ -1,11 +1,24 @@
-const sessionUserMap = new Map();
+const jwt = require("jsonwebtoken");
+const secret = "Super$ecret";
 
-function setUser(id, user) {
-  sessionUserMap.set(id, user);
+function setUser(user) {
+  return jwt.sign(
+    {
+      _id: user._id,
+      email: user.email,
+    },
+    secret
+  );
 }
 
-function getUser(id) {
-  return sessionUserMap.get(id);
+function getUser(token) {
+  if (!token) return null;
+  try {
+    return jwt.verify(token, secret);
+  } catch (err) {
+    console.error("JWT verification failed:", err);
+    return null;
+  }
 }
 
 module.exports = {
