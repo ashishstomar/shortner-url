@@ -5,68 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>URL Shortener</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <style>
       body {
-        font-family: "Inter", sans-serif;
-        background-color: #f3f4f6;
-        color: #1f2937;
+        font-family: "poppins", sans-serif;
       }
     </style>
   </head>
-  <body>
-    <div class="container">
-      <h1>Shorten Your URL</h1>
-      <p>Simplify your links with ease.</p>
+  <body
+    class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen"
+  >
+    <div
+      class="container mx-auto p-6 bg-white shadow-lg rounded-lg w-full max-w-lg"
+    >
+      <h1 class="text-2xl font-semibold mb-4">Shorten Your URL</h1>
+      <p class="text-gray-600 mb-6">Simplify your links with ease.</p>
 
-      <form method="POST" action="/url">
-        <label for="url">Enter your long URL</label>
+      <form method="POST" action="/url" class="space-y-4">
+        <label for="url" class="block text-sm font-medium text-gray-700"
+          >Enter your long URL</label
+        >
         <input
           type="text"
           id="url"
           name="url"
           placeholder="https://example.com"
           required
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button type="submit">Shorten URL</button>
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Shorten URL
+        </button>
       </form>
 
       <% if (locals.id) { %>
-      <div class="copy-container">
+      <div class="mt-6 flex items-center space-x-4">
         <input
           type="text"
           value="http://localhost:3000/<%= id %>"
           id="shortUrl"
           readonly
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-600"
         />
-        <button onclick="copyToClipboard()">Copy</button>
+        <button
+          onclick="copyToClipboard()"
+          class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          Copy
+        </button>
       </div>
       <% } %> <% if (locals.urls) { %>
-      <table>
-        <thead>
-          <th>S. No</th>
-          <th>Short ID</th>
-          <th>Redirect</th>
-          <th>Clicks</th>
-        </thead>
-        <tbody>
-          <% urls.forEach((url, index) => { %>
-          <tr>
-            <td><%= index + 1 %></td>
-            <td><%= url.shortId %></td>
-            <td><%= url.redirectURL %></td>
-            <td><%= url.visitHistory.length %></td>
-          </tr>
-          <% }) %>
-        </tbody>
-      </table>
+      <div class="mt-6 overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="py-2 px-4 border-b text-left">S. No</th>
+              <th class="py-2 px-4 border-b text-left">Short ID</th>
+              <th class="py-2 px-4 border-b text-left">Redirect</th>
+              <th class="py-2 px-4 border-b text-left">Clicks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% urls.forEach((url, index) => { %>
+            <tr>
+              <td class="py-2 px-4 border-b"><%= index + 1 %></td>
+              <td class="py-2 px-4 border-b"><%= url.shortId %></td>
+              <td class="py-2 px-4 border-b"><%= url.redirectURL %></td>
+              <td class="py-2 px-4 border-b"><%= url.visitHistory.length %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
       <% } %>
 
-      <footer>Powered by URL Shortener</footer>
+      <footer class="mt-6 text-center text-gray-500 text-sm">
+        &copy; 2024
+        <strong>
+          <a
+            href="https://github.com/ashishstomar"
+            target="_blank"
+            class="text-white text-xl"
+            >GitHub
+          </a></strong
+        >
+      </footer>
     </div>
+    <script>
+      function copyToClipboard() {
+        const shortUrl = document.getElementById("shortUrl");
+        shortUrl.select();
+        document.execCommand("copy");
+        alert("URL copied to clipboard!");
+      }
+    </script>
   </body>
 </html>
