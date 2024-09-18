@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const urlRoute = require("./routes/url");
 const { connectMongoDB } = require("./connectdb");
@@ -9,7 +10,7 @@ const cookieParser = require("cookie-parser");
 const { allowLoggedInUserOnly, checkAuth } = require("./middlewares/auth");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 connectMongoDB("mongodb://localhost:27017/url-shortner").then(() =>
   console.log("MongoDB connected")
